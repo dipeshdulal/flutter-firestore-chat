@@ -27,8 +27,8 @@ class _ChatScreenState extends State<ChatScreen> {
           FirebaseFirestore.instance.collection("messages").doc();
 
       String oldMessage = _messageControler.text.trim();
+      _messageControler.clear();
 
-      _messageControler.text = "";
       await docRef.set({
         "username": _entry.username,
         "roomId": _entry.room_id,
@@ -96,8 +96,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       vertical: 5,
                     ),
                     child: TextField(
+                      enableInteractiveSelection: true,
                       controller: _messageControler,
-                      keyboardType: TextInputType.multiline,
                       minLines: 1,
                       maxLines: 3,
                       decoration: InputDecoration(
@@ -133,12 +133,17 @@ class _ChatScreenState extends State<ChatScreen> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildMessages(_entry.room_id),
-            _buildInput(),
-          ],
+      body: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildMessages(_entry.room_id),
+              _buildInput(),
+            ],
+          ),
         ),
       ),
     );
