@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({Key? key, required this.username, required this.text})
+  const ChatBubble(
+      {Key? key,
+      required this.username,
+      required this.text,
+      required this.date})
       : super(key: key);
 
   final String username;
   final String text;
+  final String date;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class ChatBubble extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    "P",
+                    username.substring(0, 1),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -51,7 +56,7 @@ class ChatBubble extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "2020-01-23 14:33",
+                        date,
                         style: TextStyle(color: Colors.grey),
                       ),
                     ],
