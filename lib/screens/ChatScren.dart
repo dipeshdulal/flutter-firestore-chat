@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import "package:intl/intl.dart";
+
 import 'package:firebase_chat/components/ChatBubble.dart';
 import 'package:firebase_chat/models/entry.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,11 +26,13 @@ class _ChatScreenState extends State<ChatScreen> {
       DocumentReference docRef =
           FirebaseFirestore.instance.collection("messages").doc();
 
-      _messageControler.value = TextEditingValue(text: "");
+      String oldMessage = _messageControler.text.trim();
+
+      _messageControler.text = "";
       await docRef.set({
         "username": _entry.username,
         "roomId": _entry.room_id,
-        "text": _messageControler.text.trim(),
+        "text": oldMessage,
         "createdAt": Timestamp.now()
       });
     }
@@ -46,12 +50,17 @@ class _ChatScreenState extends State<ChatScreen> {
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasData) {
+              DateFormat format = DateFormat("yyyy-MM-DD HH:mm");
               return ListView.builder(
                 itemCount: snapshot.data?.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot document = snapshot.data!.docs[index];
                   return ChatBubble(
-                      username: document["username"], text: document["text"]);
+                    username: document["username"],
+                    text: document["text"],
+                    date: format
+                        .format((document["createdAt"] as Timestamp).toDate()),
+                  );
                 },
                 reverse: true,
               );
