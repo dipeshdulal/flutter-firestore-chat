@@ -32,7 +32,7 @@ class ChatBubble extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    username.substring(0, 1),
+                    username.substring(0, 1).toUpperCase(),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
